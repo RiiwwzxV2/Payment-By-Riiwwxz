@@ -1,561 +1,546 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Gateway - RiiwwxzPayment</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0a2e0a 0%, #1a3c1a 100%);
-            color: #e0f0e0;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background: rgba(10, 40, 10, 0.7);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid #2a7a2a;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A, #4CAF50);
-            z-index: 1;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #4CAF50, #8BC34A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        .payment-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .payment-card {
-            background: rgba(20, 50, 20, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid #2a7a2a;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .payment-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-            border-color: #4CAF50;
-        }
-        
-        .payment-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.8rem;
-            background: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #8BC34A;
-        }
-        
-        .account-info {
-            background: rgba(30, 70, 30, 0.6);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .info-label {
-            font-size: 0.9rem;
-            color: #a5d6a7;
-            margin-bottom: 5px;
-        }
-        
-        .info-value {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #ffffff;
-            word-break: break-all;
-        }
-        
-        .copy-btn {
-            background: linear-gradient(to right, #4CAF50, #2E7D32);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        
-        .copy-btn:hover {
-            background: linear-gradient(to right, #2E7D32, #1B5E20);
-            transform: scale(1.02);
-        }
-        
-        .copy-btn i {
-            margin-right: 8px;
-        }
-        
-        .qris-section {
-            background: rgba(20, 50, 20, 0.8);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid #2a7a2a;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        
-        .qris-title {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: #8BC34A;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .qris-container {
-            max-width: 300px;
-            margin: 0 auto 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .qris-img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        
-        .instructions {
-            background: rgba(30, 70, 30, 0.6);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid #2a7a2a;
-            margin-top: 40px;
-        }
-        
-        .instructions h3 {
-            color: #8BC34A;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .instructions ol {
-            margin-left: 20px;
-            line-height: 1.8;
-        }
-        
-        .instructions li {
-            margin-bottom: 10px;
-            padding-left: 10px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #a5d6a7;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(42, 122, 42, 0.5);
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background: #2E7D32;
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.5s ease;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        @media (max-width: 768px) {
-            .payment-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 10px;
-            }
-        }
-        
-        .metallic-effect {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .metallic-effect::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.1) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            pointer-events: none;
-        }
-        
-        .bank-bsi {
-            background: linear-gradient(135deg, rgba(30, 70, 30, 0.9), rgba(20, 50, 20, 0.9));
-        }
-        
-        .bank-bsi .card-icon {
-            background: rgba(0, 100, 0, 0.3);
-            color: #32CD32;
-        }
-        
-        .dana {
-            background: linear-gradient(135deg, rgba(40, 80, 40, 0.9), rgba(30, 60, 30, 0.9));
-        }
-        
-        .dana .card-icon {
-            background: rgba(0, 150, 0, 0.3);
-            color: #00CC66;
-        }
-        
-        .gopay {
-            background: linear-gradient(135deg, rgba(50, 90, 50, 0.9), rgba(40, 70, 40, 0.9));
-        }
-        
-        .gopay .card-icon {
-            background: rgba(0, 200, 0, 0.3);
-            color: #00FF7F;
-        }
-        
-        .seabank {
-            background: linear-gradient(135deg, rgba(60, 100, 60, 0.9), rgba(50, 80, 50, 0.9));
-        }
-        
-        .seabank .card-icon {
-            background: rgba(100, 255, 100, 0.3);
-            color: #90EE90;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment Gateway — By : Riiwwxz Store</title>
+  <style>
+    :root{
+      --metal-1: #0b6b3a;
+      --metal-2: #17884b;
+      --metal-3: #8ccf95;
+      --glass: rgba(255,255,255,0.06);
+      --card-shadow: 0 8px 30px rgba(8,40,20,0.45);
+      --accent: linear-gradient(135deg, var(--metal-1), var(--metal-2));
+      --radius: 14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #e9f8ef;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    html,body{height:100%;margin:0;background:radial-gradient(1200px 600px at 10% 20%, rgba(24,98,52,0.25), transparent), radial-gradient(1000px 500px at 90% 80%, rgba(10,60,33,0.25), transparent), #03150a;}
+
+    .wrap{
+      min-height:100%;display:flex;align-items:center;justify-content:center;padding:40px;
+    }
+
+    .container{
+      width:100%;max-width:980px;background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:28px;box-shadow: 0 20px 60px rgba(0,0,0,0.6);backdrop-filter: blur(6px);
+    }
+
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    .logo{
+      height:68px;width:68px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow: 0 6px 18px rgba(12,60,36,0.5);
+    }
+    h1{margin:0;font-size:22px}
+    p.lead{margin:0;color:var(--metal-3);opacity:0.95}
+
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:20px}
+
+    .card{animation: neonPulse 2.4s infinite ease-in-out;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));border-radius:var(--radius);padding:18px;box-shadow:var(--card-shadow);border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .method-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+    .method-icon{height:44px;width:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:#062a16}
+    .method-title{font-size:16px;margin:0}
+    .account{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:10px;border-radius:10px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .acc-left{display:flex;flex-direction:column}
+    .acc-num{font-weight:700;letter-spacing:1px}
+    .acc-name{font-size:13px;color:var(--metal-3);margin-top:6px}
+
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;cursor:pointer}
+    .btn.copy{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+
+    .qris-card{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px}
+    .qris-card img{max-width:220px;border-radius:12px;border:6px solid rgba(255,255,255,0.02);box-shadow:0 10px 40px rgba(3,20,10,0.6)}
+
+    footer{margin-top:18px;text-align:center;color:rgba(255,255,255,0.6);font-size:13px}
+
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start}
+      .logo{height:56px;width:56px}
+    }
+
+    /* micro interactions */
+    .copied{position:fixed;right:20px;bottom:20px;background:rgba(12,60,36,0.95);padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.6);}
+  .neon-glow{box-shadow:0 0 12px rgba(0,255,120,0.6), 0 0 22px rgba(0,255,140,0.35);} 
+  @keyframes neonPulse{0%{box-shadow:0 0 12px rgba(0,255,120,0.25);}50%{box-shadow:0 0 22px rgba(0,255,150,0.55);}100%{box-shadow:0 0 12px rgba(0,255,120,0.25);}}
+  /* Neon Animation */
+  .neon-anim {
+    animation: neonPulse 2s infinite alternate;
+  }
+  @keyframes neonPulse {
+    0% { box-shadow: 0 0 8px rgba(0,255,140,0.4); }
+    100% { box-shadow: 0 0 22px rgba(0,255,140,0.9); }
+  }
+
+  /* Particle Canvas */
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  /* Cyberpunk Mode */
+  body.cyberpunk {
+    background: radial-gradient(circle at top, #0ff, #001);
+    color: #0ff;
+  }
+  .cyber-card {
+    border: 2px solid #0ff;
+    box-shadow: 0 0 18px #0ff;
+    backdrop-filter: blur(4px);
+  }
+
+  /* Hologram Animation */
+  .hologram {
+    animation: holoFlicker 2s infinite;
+  }
+  @keyframes holoFlicker {
+    0% { opacity: 0.6; filter: blur(2px); }
+    50% { opacity: 1; filter: blur(0.5px); }
+    100% { opacity: 0.6; filter: blur(2px); }
+  }
+
+  /* Popup Notification */
+  #popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,255,170,0.15);
+    border: 1px solid #0f8;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #0f8;
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity .5s ease;
+    z-index: 999;
+  }
+
+  /* Smooth Page Transition */
+  body.fade {
+    opacity: 0;
+    transition: opacity .8s ease;
+  }
+  /* Cyberpunk Purple */
+  body.cyberpunk-purple {
+    background: radial-gradient(circle at top, #d400ff, #120012);
+    color: #f0b3ff;
+  }
+  .cyber-card-purple {
+    border: 2px solid #d400ff;
+    box-shadow: 0 0 20px #d400ff;
+  }
+
+  /* CRT Scanline Effect */
+  .scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 2px,
+      rgba(0,0,0,0.05) 3px,
+      rgba(0,0,0,0.05) 4px
+    );
+    z-index: 2;
+  }
+
+  /* Glitch Button */
+  .glitch-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .glitch-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: inherit;
+    mix-blend-mode: screen;
+    animation: glitch 1s infinite;
+  }
+  @keyframes glitch {
+    0% { clip-path: inset(0 0 80% 0); transform: translate(2px,-2px); }
+    20% { clip-path: inset(40% 0 20% 0); transform: translate(-2px,2px); }
+    40% { clip-path: inset(20% 0 60% 0); transform: translate(1px,-1px); }
+    60% { clip-path: inset(60% 0 10% 0); transform: translate(-1px,1px); }
+    80% { clip-path: inset(10% 0 70% 0); transform: translate(2px,1px); }
+    100% { clip-path: inset(0 0 80% 0); transform: translate(0,0); }
+  }
+</style>
 </head>
 <body>
+  <div class="wrap">
     <div class="container">
-        <header class="metallic-effect">
-            <h1><i class="fas fa-credit-card"></i> Payment Gateway</h1>
-            <p class="subtitle">Lakukan pembayaran dengan mudah melalui berbagai metode pembayaran yang tersedia. Silakan salin informasi rekening atau gunakan QRIS untuk pembayaran yang lebih cepat.</p>
-            <p class="subtitle">Nama Penerima: <strong>DORI SAMSUL HUDORI</strong></p>
-        </header>
-        
-        <div class="payment-grid">
-            <!-- BSI -->
-            <div class="payment-card bank-bsi metallic-effect">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <h2 class="card-title">Bank Syariah Indonesia (BSI)</h2>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nomor Rekening</div>
-                    <div class="info-value" id="bsi-account">7331392329</div>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nama Penerima</div>
-                    <div class="info-value">DORI SAMSUL HUDORI</div>
-                </div>
-                
-                <button class="copy-btn" data-clipboard-target="#bsi-account">
-                    <i class="fas fa-copy"></i> Salin Nomor Rekening
-                </button>
-            </div>
-            
-            <!-- DANA -->
-            <div class="payment-card dana metallic-effect">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <h2 class="card-title">DANA</h2>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nomor Telepon</div>
-                    <div class="info-value" id="dana-account">083897762065</div>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nama Penerima</div>
-                    <div class="info-value">DORI SAMSUL HUDORI</div>
-                </div>
-                
-                <button class="copy-btn" data-clipboard-target="#dana-account">
-                    <i class="fas fa-copy"></i> Salin Nomor DANA
-                </button>
-            </div>
-            
-            <!-- GOPAY -->
-            <div class="payment-card gopay metallic-effect">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h2 class="card-title">GOPAY</h2>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nomor Telepon</div>
-                    <div class="info-value" id="gopay-account">082128399932</div>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nama Penerima</div>
-                    <div class="info-value">DORI SAMSUL HUDORI</div>
-                </div>
-                
-                <button class="copy-btn" data-clipboard-target="#gopay-account">
-                    <i class="fas fa-copy"></i> Salin Nomor GOPAY
-                </button>
-            </div>
-            
-            <!-- SEABANK -->
-            <div class="payment-card seabank metallic-effect">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-piggy-bank"></i>
-                    </div>
-                    <h2 class="card-title">SEABANK</h2>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nomor Rekening</div>
-                    <div class="info-value" id="seabank-account">901068812599</div>
-                </div>
-                
-                <div class="account-info">
-                    <div class="info-label">Nama Penerima</div>
-                    <div class="info-value">DORI SAMSUL HUDORI</div>
-                </div>
-                
-                <button class="copy-btn" data-clipboard-target="#seabank-account">
-                    <i class="fas fa-copy"></i> Salin Nomor Rekening
-                </button>
-            </div>
+      <header>
+        <div class="logo">PG</div>
+        <div>
+          <h1>Payment Gateway — Hijau Metalik</h1>
+          <p class="lead">Pilih metode pembayaran dan salin detailnya. QRIS tersedia di bawah.</p>
         </div>
-        
-        <!-- QRIS Section -->
-        <div class="qris-section metallic-effect">
-            <h2 class="qris-title"><i class="fas fa-qrcode"></i> Pembayaran via QRIS</h2>
-            <p>Scan QR code berikut untuk pembayaran yang lebih cepat dan mudah:</p>
-            
-            <div class="qris-container">
-                <img src="https://sharp-copper-vt5uwnpjtx-m8zz843qcw.edgeone.dev/644003106_zion.jpg" alt="QRIS Payment" class="qris-img">
+      </header>
+
+<div class="scanline"></div>
+
+<!-- AI Chatbot Mini -->
+<div id="chatbotBox" style="position:fixed; bottom:20px; right:20px; width:260px; background:rgba(0,0,0,0.7); border:1px solid #0f8; border-radius:14px; padding:12px; backdrop-filter:blur(6px); color:#0f8; font-size:14px; z-index:9999;">
+  <div style="font-weight:700; margin-bottom:8px;">🤖 ZionBot</div>
+  <div id="chatLog" style="height:140px; overflow-y:auto; margin-bottom:8px; border:1px solid #0f8; padding:6px; border-radius:8px;"></div>
+  <input id="chatInput" type="text" placeholder="Ketik pesan..." style="width:100%; padding:6px; border-radius:8px; border:none;">
+</div>
+
+<div id="popup">Berhasil disalin!</div>
+
+<canvas id="particles"></canvas>
+
+<!-- Input Amount -->
+<div class="card neon-anim" style="margin-bottom:20px;">
+  <label style="font-weight:600;">Masukkan Jumlah Pembayaran</label>
+  <input id="amountInput" type="number" placeholder="cth: 50000" style="padding:12px; margin-top:10px; border-radius:8px; border:none; width:100%; font-size:16px;">
+  <p style="margin-top:10px; font-weight:700; font-size:18px;">Total: <span id="totalDisplay">0</span></p>
+</div>
+
+<!-- Upload Bukti -->
+<div class="card neon-anim" style="margin-bottom:20px; text-align:center;">
+  <h3>Upload Bukti Transfer</h3>
+  <input id="uploadBukti" type="file" accept="image/*" style="margin-top:10px;">
+  <img id="previewBukti" style="margin-top:15px; width:240px; border-radius:14px; display:none;" />
+</div>
+
+      <!-- Theme Toggle -->
+      <div style="margin-bottom:18px; display:flex; justify-content:flex-end;">
+        <button id="themeToggle" class="btn" style="padding:10px 16px; font-weight:600; border-radius:10px;">🌗 Ganti Tema</button>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="method-header">
+            <div class="method-icon">BS</div>
+            <div>
+              <div class="method-title">BSI (Bank Syariah Indonesia)</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.75)">Rekening bank</div>
             </div>
-            
-            <p>Gunakan aplikasi mobile banking, e-wallet, atau pembayaran digital lainnya yang mendukung QRIS untuk melakukan pembayaran.</p>
+          </div>
+
+          <div class="account">
+            <div class="acc-left">
+              <div class="acc-num" id="bsi-number">7331392329</div>
+              <div class="acc-name">DORI SAMSUL HUDORI</div>
+            </div>
+            <div>
+              <button class="btn copy" data-copy="7331392329">Salin</button>
+            </div>
+          </div>
         </div>
-        
-        <!-- Instructions -->
-        <div class="instructions metallic-effect">
-            <h3><i class="fas fa-info-circle"></i> Petunjuk Pembayaran</h3>
-            <ol>
-                <li>Pilih metode pembayaran yang diinginkan (BSI, DANA, GOPAY, SEABANK, atau QRIS).</li>
-                <li>Untuk transfer bank/dompet digital, salin nomor rekening/telepon dengan menekan tombol "Salin".</li>
-                <li>Buka aplikasi bank/dompet digital Anda dan lakukan transfer sesuai nominal yang diminta.</li>
-                <li>Untuk pembayaran via QRIS, buka aplikasi pembayaran Anda dan pilih scan QR code.</li>
-                <li>Arahkan kamera ke QR code di atas dan ikuti instruksi di aplikasi Anda.</li>
-                <li>Setelah melakukan pembayaran, simpan bukti transfer untuk keperluan verifikasi.</li>
-                <li>Jika mengalami kendala, hubungi kami melalui kontak yang tersedia.</li>
-            </ol>
+
+        <div class="card">
+          <div class="method-header">
+            <div class="method-icon">DA</div>
+            <div>
+              <div class="method-title">DANA</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.75)">Dompet digital</div>
+            </div>
+          </div>
+
+          <div class="account">
+            <div class="acc-left">
+              <div class="acc-num" id="dana-number">083897762065</div>
+              <div class="acc-name">DORI SAMSUL HUDORI</div>
+            </div>
+            <div>
+              <button class="btn copy" data-copy="083897762065">Salin</button>
+            </div>
+          </div>
         </div>
-        
-        <footer>
-            <p>&copy; 2023 Payment Gateway - Dori Samsul Hudori. Semua hak dilindungi.</p>
-            <p>Website ini aman dan terenkripsi untuk melindungi informasi Anda.</p>
-        </footer>
+
+        <div class="card">
+          <div class="method-header">
+            <div class="method-icon">GP</div>
+            <div>
+              <div class="method-title">GoPay</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.75)">Dompet digital</div>
+            </div>
+          </div>
+
+          <div class="account">
+            <div class="acc-left">
+              <div class="acc-num" id="gopay-number">082128399932</div>
+              <div class="acc-name">DORI SAMSUL HUDORI</div>
+            </div>
+            <div>
+              <button class="btn copy" data-copy="082128399932">Salin</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="method-header">
+            <div class="method-icon">SB</div>
+            <div>
+              <div class="method-title">SeaBank</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.75)">Rekening bank</div>
+            </div>
+          </div>
+
+          <div class="account">
+            <div class="acc-left">
+              <div class="acc-num" id="seabank-number">901068812599</div>
+              <div class="acc-name">DORI SAMSUL HUDORI</div>
+            </div>
+            <div>
+              <button class="btn copy" data-copy="901068812599">Salin</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <section style="margin-top:22px;display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start">
+        <div class="card">
+          <h3 style="margin-top:0;color:var(--metal-3)">Catatan Pembayaran</h3>
+          <ul style="line-height:1.7;color:rgba(255,255,255,0.85)">
+            <li>Pastikan nama dan nomor sesuai saat melakukan transfer.</li>
+            <li>Gunakan tombol <strong>Salin</strong> untuk menyalin nomor rekening/nomor dompet digital.</li>
+            <li>Simpan bukti transfer/struk untuk verifikasi.</li>
+          </ul>
+        </div>
+
+        <div class="card qris-card">
+          <div style="text-align:center">
+            <div style="font-weight:700;margin-bottom:6px">QRIS — Scan untuk membayar</div>
+            <div style="font-size:13px;color:var(--metal-3);margin-bottom:10px">Scan QR dengan aplikasi e-wallet Anda</div>
+          </div>
+          <img src="https://sharp-copper-vt5uwnpjtx-m8zz843qcw.edgeone.dev/644003106_zion.jpg" alt="QRIS" id="qris-img">
+          <div style="display:flex;gap:8px">
+            <a class="btn" href="https://sharp-copper-vt5uwnpjtx-m8zz843qcw.edgeone.dev/644003106_zion.jpg" target="_blank" rel="noopener">Buka gambar</a>
+            <button class="btn" id="download-qris">Unduh QR</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payment Form -->
+      <div class="card" style="margin-top:20px;">
+        <h3 style="margin-top:0;color:var(--metal-3)">Hitung Nominal & Upload Bukti</h3>
+
+        <label>Masukkan nominal pembayaran:</label>
+        <input id="payInput" type="number" placeholder="cth: 150000" style="width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:white;">
+
+        <div style="margin:10px 0;font-size:17px;font-weight:700">Total: <span id="payTotal">0</span></div>
+
+        <label>Upload bukti transfer:</label>
+        <input id="uploadProof" type="file" accept="image/*" style="margin-top:8px">
+
+        <div id="previewProof" style="margin-top:14px;display:none">
+          <p style="margin:0 0 6px;color:var(--metal-3)">Preview:</p>
+          <img id="proofImg" src="" style="max-width:200px;border-radius:10px;box-shadow:0 0 14px rgba(0,255,120,0.4)">
+        </div>
+      </div>
+
+      <footer>© 2025 Payment Gateway — dibuat cepat dengan tema hijau metalik</footer>
+
     </div>
-    
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notification-text">Berhasil disalin ke clipboard!</span>
-    </div>
-    
-    <script>
-        // Fungsi untuk menyalin teks ke clipboard
-        function copyToClipboard(text) {
-            // Buat elemen textarea sementara
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            
-            // Pilih dan salin teks
-            textarea.select();
-            textarea.setSelectionRange(0, 99999); // Untuk mobile
-            document.execCommand('copy');
-            
-            // Hapus textarea sementara
-            document.body.removeChild(textarea);
-            
-            // Tampilkan notifikasi
-            showNotification('Nomor berhasil disalin ke clipboard!');
+  </div>
+
+  <div id="toast" style="display:none" class="copied">Tersalin ke clipboard</div>
+
+  <script>
+    // Sound effect
+    const clickSound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_a64361c37d.mp3?filename=click-124467.mp3');
+
+    // Copy to clipboard with feedback
+    document.querySelectorAll('.btn.copy').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const txt = btn.getAttribute('data-copy');
+        try{
+          clickSound.play(); await navigator.clipboard.writeText(txt);
+          const toast = document.getElementById('toast');
+          toast.style.display='block';
+          setTimeout(()=>toast.style.display='none',1800);
+        }catch(e){
+          alert('Gagal menyalin. Silakan salin manual: ' + txt);
         }
-        
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notification-text');
-            
-            notificationText.textContent = message;
-            notification.classList.add('show');
-            
-            // Sembunyikan notifikasi setelah 3 detik
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Tambahkan event listener ke semua tombol salin
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-clipboard-target');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    copyToClipboard(targetElement.textContent);
-                }
-            });
-        });
-        
-        // Efek visual untuk kartu pembayaran
-        document.querySelectorAll('.payment-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-        
-        // Efek metalik dinamis
-        document.addEventListener('mousemove', function(e) {
-            const cards = document.querySelectorAll('.metallic-effect');
-            const mouseX = e.clientX / window.innerWidth;
-            const mouseY = e.clientY / window.innerHeight;
-            
-            cards.forEach(card => {
-                const cardRect = card.getBoundingClientRect();
-                const cardCenterX = cardRect.left + cardRect.width / 2;
-                const cardCenterY = cardRect.top + cardRect.height / 2;
-                
-                const angle = Math.atan2(e.clientY - cardCenterY, e.clientX - cardCenterX) * (180 / Math.PI);
-                
-                card.style.setProperty('--shine-angle', `${angle}deg`);
-            });
-        });
-    </script>
-</body>
-</html>
+      })
+    })
+
+    // Download QR image
+    document.getElementById('download-qris').addEventListener('click', ()=>{
+      const url = document.getElementById('qris-img').src;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'qris.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  // theme toggle
+    const toggle = document.getElementById('themeToggle');
+    let dark = true;
+    toggle.addEventListener('click', ()=>{
+      dark = !dark;
+      if(!dark){
+        document.body.style.background = '#e9fcef';
+        document.body.style.color = '#002b14';
+        toggle.innerText = '🌙 Mode Gelap';
+      } else {
+        document.body.style.background = '';
+        document.body.style.color = '';
+        toggle.innerText = '🌗 Ganti Tema';
+      }
+    });
+  // Auto calculate payment
+    const payInput = document.getElementById('payInput');
+    const payTotal = document.getElementById('payTotal');
+    payInput.addEventListener('input', ()=>{
+      const val = Number(payInput.value)||0;
+      payTotal.textContent = val.toLocaleString('id-ID');
+    });
+
+    // Upload preview
+    const upload = document.getElementById('uploadProof');
+    const preview = document.getElementById('previewProof');
+    const proofImg = document.getElementById('proofImg');
+    upload.addEventListener('change', ()=>{
+      const file = upload.files[0];
+      if(!file) return;
+      const r = new FileReader();
+      r.onload = e=>{
+        proofImg.src = e.target.result;
+        preview.style.display='block';
+      }
+      r.readAsDataURL(file);
+    });
+
+    // Sound effect for copy
+  const copySound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+
+  document.querySelectorAll('.copy-btn').forEach(btn =>{
+    btn.addEventListener('click', ()=>{
+      copySound.currentTime = 0;
+      copySound.play();
+    });
+  });
+
+  // Auto total calculation
+  const amountInput = document.getElementById('amountInput');
+  const totalDisplay = document.getElementById('totalDisplay');
+  amountInput?.addEventListener('input', ()=>{
+    const val = Number(amountInput.value) || 0;
+    totalDisplay.textContent = val.toLocaleString('id-ID');
+  });
+
+  // Upload bukti transfer preview
+  const upload = document.getElementById('uploadBukti');
+  const preview = document.getElementById('previewBukti');
+  upload?.addEventListener('change', ()=>{
+    const file = upload.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = e =>{
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Futuristic particle effect
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = Array.from({length: 70}, ()=>({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*3+1,
+    s: Math.random()*1+0.2
+  }));
+
+  function drawParticles(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(0,255,140,0.6)';
+      ctx.fill();
+      p.y += p.s;
+      if(p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+  // Smooth Page Transition
+  document.body.classList.add('fade');
+  setTimeout(()=> document.body.classList.remove('fade'), 80);
+
+  // Cyberpunk Toggle
+  const cyberBtn = document.createElement('button');
+  cyberBtn.textContent = '⚡ Cyberpunk Mode';
+  cyberBtn.className = 'btn';
+  cyberBtn.style.marginBottom = '14px';
+  document.body.insertBefore(cyberBtn, document.body.firstChild);
+
+  cyberBtn.onclick = ()=>{
+    document.body.classList.toggle('cyberpunk');
+    document.querySelectorAll('.card').forEach(c=> c.classList.toggle('cyber-card'));
+  };
+
+  // Popup Notification
+  function showPopup(msg){
+    const p = document.getElementById('popup');
+    p.textContent = msg;
+    p.style.opacity = 1;
+    setTimeout(()=> p.style.opacity = 0, 2000);
+  }
+
+  // Add popup to copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn =>{
+    btn.addEventListener('click', ()=>{
+      showPopup('Tersalin!');
+    });
+  });
+
+  // Hologram effect on QR
+  document.querySelectorAll('img').forEach(img =>{
+    img.classList.add('hologram');
+  });
+  // Cyberpunk Purple Toggle
+  const purpleBtn = document.createElement('button');
+  purpleBtn.textContent = '💜 Cyberpunk Purple';
+  purpleBtn.className = 'btn glitch-btn';
+  purpleBtn.style.marginBottom = '14px';
+  document.body.insertBefore(purpleBtn, document.body.firstChild);
+
+  purpleBtn.onclick = ()=>{
+    document.body.classList.toggle('cyberpunk-purple');
+    document.querySelectorAll('.card').forEach(c=> c.classList.toggle('cyber-card-purple'));
+  };
+
+  // Sci-fi Ambient Music
+  const ambient = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_4fe7c4bb91.mp3');
+  ambient.loop = true;
+  ambient.volume = 0.4;
+
+  const musicBtn = document.createElement('button');
+  musicBtn.textContent = '🎵 Sci-Fi Music';
+  musicBtn.className = 'btn glitch-btn';
+  musicBtn.style.marginBottom = '14px';
+  document.body.insertBefore(musicBtn, document.body.firstChild);
+
+  musicBtn.onclick = ()=>{
+    if(ambient.paused) ambient.play(); else ambient.pause();
+  };
+
+  // Chatbot Logic
+  const chatInput = document.getElement
